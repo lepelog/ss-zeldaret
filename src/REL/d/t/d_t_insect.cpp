@@ -36,10 +36,10 @@ STATE_DEFINE(dTgInsect_c, End);
 static const s32 unused[] = {
     0x001E0100, 0, 0, 0, 0, 0, 0, 0,
 };
-const f32 dTgInsect_c::SCALE_X = 100;
-const f32 dTgInsect_c::SCALE_Y = 100;
+const f32 dTgInsect_c::SCALE_X = 100.f;
+const f32 dTgInsect_c::SCALE_Y = 100.f;
 
-static const f32 unused2[] = {150, 0.5f};
+static const f32 unused2[] = {150.f, 0.5f};
 
 const s32 *useUnused() {
     return unused + (s32)unused2;
@@ -101,7 +101,7 @@ int dTgInsect_c::actorPostCreate() {
                 checkProfile(prof, fProfile::OBJ_BARREL) || checkProfile(prof, fProfile::OBJ_VSD) ||
                 checkProfile(prof, fProfile::OBJ_SOIL)
             ) &&
-            getSquareDistanceTo(obj->mPosition) < 25) {
+            getSquareDistanceTo(obj->mPosition) < 25.f) {
             if (subtype == SUBTYPE_FARON_GRASSHOPPER
                 || subtype == SUBTYPE_SKYLOFT_MANTIS
                 || subtype == SUBTYPE_LANAYRU_ANT
@@ -191,9 +191,9 @@ void dTgInsect_c::executeState_Wait() {
                     nw4r::math::MTX34 scale;
                     PSMTXScale(scale, mScale.x, mScale.y, mScale.x);
                     PSMTXConcat(mtx, scale, mtx);
-                    nw4r::math::AABB aabb(-100, 0, -100, 100, 100, 100);
+                    nw4r::math::AABB aabb(-100.f, 0.f, -100.f, 100.f, 100.f, 100.f);
                     aabb.Set(&aabb, &mtx);
-                    if (fn_801BB750(&aabb, 10000)) {
+                    if (fn_801BB750(&aabb, 10000.f)) {
                         spawnInsect(i);
                     }
                 } else {
@@ -221,7 +221,7 @@ void dTgInsect_c::executeState_WaitCreate() {
                 return;
             }
         } else {
-            if (mPosition.squareDistanceToXZ(mActorNode.get()->mPosition) < 25) {
+            if (mPosition.squareDistanceToXZ(mActorNode.get()->mPosition) < 25.f) {
                 return;
             }
         }
@@ -240,7 +240,7 @@ void dTgInsect_c::executeState_WaitCreate() {
         if (mRevealed) {
             tmp1 = mRevealedSpawnPos;
         }
-        mAng3_c rot(0, cM::rndFX(65536), 0);
+        mAng3_c rot(0, cM::rndFX(65536.f), 0);
         switch (getSubtype()) {
             case SUBTYPE_LANAYRU_ANT:
                 insect = dAcObjBase_c::createInsectActor(this, fProfile::INSECT_ANT, 1, &tmp1, &rot, nullptr, 0, 0x3f);
@@ -346,8 +346,8 @@ void dTgInsect_c::spawnInsect(s32 index) {
     s32 tries = 5;
     do {
         f32 scale = cM::rndF(scaledScaleX);
-        angle1 = cM::rndFX(65536.0f);
-        rot.y = cM::rndFX(65536.0f);
+        angle1 = cM::rndFX(65536.f);
+        rot.y = cM::rndFX(65536.f);
         mVec3_c v2 = mVec3_c::Ez * scale;
         cLib::offsetPos(pos, mPosition, angle1, v2);
         switch (getSubtype()) {
@@ -378,7 +378,7 @@ void dTgInsect_c::spawnInsect(s32 index) {
             case SUBTYPE_LANAYRU_ANT:
             case SUBTYPE_SKYLOFT_MANTIS:
             case SUBTYPE_EDLIN_ROLLER:
-                pos.y = 100 + mPosition.y;
+                pos.y = 100.f + mPosition.y;
                 if (dBgS_ObjGndChk::CheckPos(pos)) {
                     spawnFound = true;
                 }
@@ -450,7 +450,7 @@ bool dTgInsect_c::shouldSpawn() {
         } else if ((isSubtype(SUBTYPE_STARRY_FIREFLY)) && !dAcItem_c::checkFlag(ITEM_STARRY_FIREFLY)) {
             return true;
         } else {
-            if (cM::rndF(1.0f) >= 0.5f) {
+            if (cM::rndF(1.f) >= 0.5f) {
                 return false;
             } else {
                 return true;
